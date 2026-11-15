@@ -1,0 +1,14 @@
+h1 {
+    color: #F5F1E8;
+}
+.hero{
+    background-color: #0B1F33;
+    background-image: url("../images/hero-marina.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 80vh;
+    background-image:
+    linear-gradient(rgba(11, 31, 51, 0.55), rgba(11, 31, 51, 0.55)),
+    url("../images/hero-marina.jpeg");
+}
