@@ -46,6 +46,7 @@ h1 {
 }
 .hero-actions button:hover{
     background-color: #D8BD91;
+    cursor: pointer;
 }
 nav{
     justify-content: space-between;
