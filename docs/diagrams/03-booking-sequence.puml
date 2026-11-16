@@ -1,0 +1,158 @@
+@startuml AnchorDrop_Booking_Sequence
+title AnchorDrop — Booking Journey Sequence\nRequest → Compatibility → Accept → Arrival Unlock → Delay → Complete
+
+skinparam backgroundColor #F5F1E8
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam sequenceArrowThickness 1.2
+skinparam roundCorner 8
+skinparam responseMessageBelowArrow true
+
+skinparam participant {
+  BackgroundColor #FFFFFF
+  BorderColor #0B1F33
+  FontColor #0B1F33
+}
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #0B1F33
+  FontColor #0B1F33
+}
+
+skinparam database {
+  BackgroundColor #0B1F33
+  BorderColor #C6A56B
+  FontColor #F5F1E8
+}
+
+skinparam lifeLineBorderColor #0B1F33
+skinparam lifeLineBackgroundColor #FFFFFF
+skinparam sequenceLifeLineBorderColor #C6A56B
+
+skinparam note {
+  BackgroundColor #FFF8EE
+  BorderColor #C6A56B
+  FontColor #0B1F33
+}
+
+actor "Boater" as B
+participant "Web Portal\n(Next.js UI)" as UI
+participant "API Layer\n(Route Handlers)" as API
+participant "Compatibility\nEngine" as COMP
+database "MongoDB" as DB
+actor "Dock Owner" as O
+
+== Authentication & Vessel Setup ==
+
+B -> UI : Register / Login (role = boater)
+UI -> API : POST /api/auth/login
+API -> DB : Find user + verify bcrypt hash
+DB --> API : User document
+API --> UI : Session / JWT cookie
+UI --> B : Open Boater Dashboard
+
+B -> UI : Create vessel profile\n(LOA, beam, draft, type, registration)
+UI -> API : POST /api/vessels
+API -> DB : Insert vessel (userId)
+DB --> API : Vessel saved
+API --> UI : Vessel JSON
+UI --> B : Vessel listed under My Vessels
+
+== Discovery & Compatibility ==
+
+B -> UI : Explore docks (filters:\ncity/waterway, length, depth, price)
+UI -> API : GET /api/docks?filters...
+API -> DB : Query docks (public projection)
+note right of API
+  Public projection EXCLUDES
+  arrivalInstructions
+end note
+DB --> API : Dock list
+API --> UI : Cards / details
+UI --> B : Compare listings
+
+B -> UI : Select berth + vessel → Check fit
+UI -> API : POST /api/bookings/check-compatibility
+API -> COMP : Compare vessel vs dock limits
+COMP --> API : { length, beam, draft, overall }
+API --> UI : Compatibility result
+UI --> B : Show Compatible / Not compatible
+
+alt Vessel is NOT compatible
+  B -> UI : Choose another berth or vessel
+else Vessel is compatible
+  == Booking Request ==
+  B -> UI : Submit reservation\n(dates + special requests)
+  UI -> API : POST /api/bookings
+  API -> COMP : Re-validate compatibility (server-side)
+  COMP --> API : Pass
+  API -> DB : Insert booking status = pending
+  DB --> API : Booking id
+  API --> UI : Booking created
+  UI --> B : Trip status = Pending
+
+  == Owner Review ==
+  O -> UI : Open Owner Dashboard → Requests
+  UI -> API : GET /api/bookings/owner
+  API -> DB : Find bookings for ownerId\n(+ vessel + boater details)
+  DB --> API : Pending requests
+  API --> UI : Request center data
+  UI --> O : Show boater + vessel specs + dates
+
+  alt Owner Rejects
+    O -> UI : Reject request
+    UI -> API : PATCH /api/bookings/:id/status { rejected }
+    API -> DB : Update status = rejected
+    DB --> API : OK
+    API --> UI : Updated booking
+    UI --> O : Status = Rejected
+    UI --> B : Status = Rejected\n(no arrival instructions)
+  else Owner Accepts
+    O -> UI : Accept request
+    UI -> API : PATCH /api/bookings/:id/status { accepted }
+    API -> DB : Update status = accepted
+    DB --> API : OK
+    API --> UI : Updated booking
+    UI --> O : Status = Accepted
+
+    == Arrival Instructions Unlock ==
+    B -> UI : Open trip details
+    UI -> API : GET /api/bookings/boater
+    API -> DB : Load booking + dock
+    API -> API : If accepted → include\narrivalInstructions
+    API --> UI : Booking + private arrival info
+    UI --> B : Gate code · Slip · VHF channel
+
+    == Optional Delay Reporting ==
+    B -> UI : Report delay (new ETA + note)
+    UI -> API : PATCH /api/bookings/:id/delay
+    API -> DB : Save delayEta + delayNote
+    DB --> API : OK
+    API --> UI : Delay saved
+    UI --> B : Delay confirmed
+    UI --> O : Arrivals & Delay Alerts updated
+
+    == Completion ==
+    O -> UI : Mark booking completed\n(or system/admin flow)
+    UI -> API : PATCH /api/bookings/:id/status { completed }
+    API -> DB : Update status = completed
+    DB --> API : OK
+    API --> UI : Done
+    UI --> B : Trip status = Completed
+    UI --> O : Booking closed
+  end
+end
+
+legend right
+  |= Step |= Outcome |
+  | Compatibility | Fewer unsuitable requests |
+  | Pending | Shared status of truth |
+  | Accepted | Unlocks private arrival data |
+  | Delay | Owner sees updated ETA in-app |
+  | Completed | Lifecycle closed for both sides |
+  | Stack | Next.js API + MongoDB — no external booking API required |
+endlegend
+
+@enduml

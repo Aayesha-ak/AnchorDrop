@@ -1,0 +1,150 @@
+@startuml AnchorDrop_System_Architecture
+title AnchorDrop — System Architecture (Web Portal)\nNext.js + MongoDB | Discover. Dock. Unwind.
+
+skinparam backgroundColor #F5F1E8
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam roundCorner 12
+skinparam packageStyle rectangle
+skinparam ArrowColor #0B1F33
+skinparam ArrowThickness 1.2
+
+skinparam component {
+  BackgroundColor #FFFFFF
+  BorderColor #0B1F33
+  FontColor #0B1F33
+}
+
+skinparam package {
+  BackgroundColor #FFFFFF
+  BorderColor #C6A56B
+  FontColor #0B1F33
+  FontStyle bold
+}
+
+skinparam database {
+  BackgroundColor #0B1F33
+  BorderColor #C6A56B
+  FontColor #F5F1E8
+}
+
+skinparam cloud {
+  BackgroundColor #FFFFFF
+  BorderColor #C6A56B
+  FontColor #0B1F33
+}
+
+skinparam note {
+  BackgroundColor #FFF8EE
+  BorderColor #C6A56B
+  FontColor #0B1F33
+}
+
+actor "Boater\n(Browser)" as Boater #0B1F33
+actor "Dock Owner\n(Browser)" as Owner #0B1F33
+actor "Guest Visitor\n(Browser)" as Guest #0B1F33
+
+rectangle "AnchorDrop Responsive Web Portal" as Portal #F5F1E8 {
+
+  package "Presentation Layer (Next.js App Router + React)" as UI {
+    [Public Homepage\nHero · Explore Docks · How It Works · Auth] as Home
+    [Boater Dashboard\nVessels · Search & Book · Trips · Delays] as BoaterUI
+    [Owner Dashboard\nBerths · Requests · Arrivals] as OwnerUI
+    [Shared UI Kit\nNav · Cards · Modals · Status Badges\nBrand: Navy / Gold / Cream] as UIKit
+  }
+
+  package "Application Layer (Route Handlers / Server Actions)" as APP {
+    [Auth API\nregister · login · me · logout] as AuthAPI
+    [Docks API\nsearch · CRUD · public strip private fields] as DocksAPI
+    [Vessels API\nCRUD for boater ownership] as VesselsAPI
+    [Bookings API\nrequest · status · delay · instructions] as BookingsAPI
+    [Compatibility Engine\nlength · beam · draft vs berth limits] as Compat
+  }
+
+  package "Cross-Cutting Concerns" as XCUT {
+    [Session / JWT Guard\nRole & ownership checks] as Guard
+    [Zod Validation\nRequest schemas] as Zod
+    [Password Hashing\nbcryptjs] as Bcrypt
+    [Serializers\nHide arrivalInstructions until accepted] as Ser
+  }
+
+  package "Data Access Layer" as DAL {
+    [Mongo Connection Helper\nlib/db.ts] as DBConn
+    [Mongoose Models\nUser · Vessel · Dock · Booking] as Models
+  }
+}
+
+database "MongoDB\nanchordrop" as Mongo {
+  [users]
+  [vessels]
+  [docks]
+  [bookings]
+}
+
+cloud "Optional Later (NOT required for v1)" as Optional {
+  [Maps / Geocoding]
+  [Image CDN]
+  [Email / SMS]
+  [Payments]
+}
+
+Guest --> Home : browse listings
+Boater --> Home
+Boater --> BoaterUI : authenticated
+Owner --> Home
+Owner --> OwnerUI : authenticated
+
+Home --> UIKit
+BoaterUI --> UIKit
+OwnerUI --> UIKit
+
+Home --> DocksAPI
+Home --> AuthAPI
+BoaterUI --> VesselsAPI
+BoaterUI --> DocksAPI
+BoaterUI --> BookingsAPI
+OwnerUI --> DocksAPI
+OwnerUI --> BookingsAPI
+
+AuthAPI --> Guard
+AuthAPI --> Bcrypt
+AuthAPI --> Zod
+DocksAPI --> Guard
+DocksAPI --> Zod
+DocksAPI --> Ser
+VesselsAPI --> Guard
+VesselsAPI --> Zod
+BookingsAPI --> Guard
+BookingsAPI --> Zod
+BookingsAPI --> Compat
+BookingsAPI --> Ser
+
+AuthAPI --> Models
+DocksAPI --> Models
+VesselsAPI --> Models
+BookingsAPI --> Models
+Compat --> Models
+Models --> DBConn
+DBConn --> Mongo
+
+note right of Compat
+  Preliminary dimensional fit only.
+  Not a navigational safety guarantee.
+end note
+
+note bottom of Optional
+  v1 runs fully local-first with
+  Next.js + MongoDB and seed data.
+  No mandatory external business APIs.
+end note
+
+legend right
+  |= Color |= Meaning |
+  | <#0B1F33> | Deep Navy — trust / primary |
+  | <#C6A56B> | Champagne Gold — accents |
+  | <#F5F1E8> | Cream — canvas |
+  | Web portal only — no native apps in v1 |
+endlegend
+
+@enduml

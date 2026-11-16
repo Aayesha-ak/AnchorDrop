@@ -1,0 +1,146 @@
+@startuml AnchorDrop_Use_Case_Diagram
+title AnchorDrop — Use Case Diagram (Web Portal)\nTwo-Sided Marketplace | Boaters ↔ Dock Owners
+
+left to right direction
+
+skinparam backgroundColor #F5F1E8
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam packageStyle rectangle
+skinparam ArrowColor #0B1F33
+
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #0B1F33
+  FontColor #0B1F33
+}
+
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #C6A56B
+  FontColor #0B1F33
+}
+
+skinparam package {
+  BackgroundColor #FFFFFF
+  BorderColor #0B1F33
+  FontColor #0B1F33
+  FontStyle bold
+}
+
+skinparam note {
+  BackgroundColor #FFF8EE
+  BorderColor #C6A56B
+  FontColor #0B1F33
+}
+
+actor "Guest" as Guest
+actor "Boater" as Boater
+actor "Dock Owner" as Owner
+
+rectangle "AnchorDrop Web Portal" as System {
+
+  package "Public Marketplace" {
+    usecase "View Homepage\n(Hero · Brand · Footer)" as UC_Home
+    usecase "Explore & Filter Docks" as UC_Explore
+    usecase "View Dock Details\n(public fields only)" as UC_Details
+    usecase "Read How It Works" as UC_HIW
+    usecase "Register Account\n(role: boater | dock_owner)" as UC_Reg
+    usecase "Login / Logout" as UC_Login
+    usecase "Use Quick-Demo Credentials" as UC_Demo
+  }
+
+  package "Boater Capabilities" {
+    usecase "Manage Vessel Profiles (CRUD)" as UC_Vessel
+    usecase "Check Vessel–Berth Compatibility" as UC_Compat
+    usecase "Submit Booking Request" as UC_Request
+    usecase "Track Trip Status" as UC_Status
+    usecase "View Arrival Instructions\n(only when Accepted)" as UC_Arrival
+    usecase "Report Arrival Delay (ETA + note)" as UC_Delay
+  }
+
+  package "Dock Owner Capabilities" {
+    usecase "Manage Berth Listings (CRUD)" as UC_Berth
+    usecase "Review Incoming Requests\n+ Vessel Specs" as UC_Review
+    usecase "Accept Booking" as UC_Accept
+    usecase "Reject Booking" as UC_Reject
+    usecase "Monitor Today's Arrivals" as UC_Arrivals
+    usecase "Receive Delay Alerts" as UC_DelayAlert
+  }
+
+  package "Shared Platform Services" {
+    usecase "Enforce Role Authorization" as UC_Authz
+    usecase "Persist Data in MongoDB" as UC_Persist
+    usecase "Hash Passwords (bcrypt)" as UC_Hash
+  }
+}
+
+' Guest
+Guest --> UC_Home
+Guest --> UC_Explore
+Guest --> UC_Details
+Guest --> UC_HIW
+Guest --> UC_Reg
+Guest --> UC_Login
+Guest --> UC_Demo
+
+' Boater inherits public browsing after login still uses same explore
+Boater --> UC_Login
+Boater --> UC_Explore
+Boater --> UC_Details
+Boater --> UC_Vessel
+Boater --> UC_Compat
+Boater --> UC_Request
+Boater --> UC_Status
+Boater --> UC_Arrival
+Boater --> UC_Delay
+
+' Owner
+Owner --> UC_Login
+Owner --> UC_Berth
+Owner --> UC_Review
+Owner --> UC_Accept
+Owner --> UC_Reject
+Owner --> UC_Arrivals
+Owner --> UC_DelayAlert
+
+' Include / extend relationships
+UC_Request ..> UC_Compat : <<include>>
+UC_Request ..> UC_Authz : <<include>>
+UC_Accept ..> UC_Authz : <<include>>
+UC_Reject ..> UC_Authz : <<include>>
+UC_Arrival ..> UC_Status : <<extend>>
+UC_DelayAlert ..> UC_Delay : <<include>>
+UC_Reg ..> UC_Hash : <<include>>
+UC_Login ..> UC_Hash : <<include>>
+
+UC_Vessel ..> UC_Persist : <<include>>
+UC_Berth ..> UC_Persist : <<include>>
+UC_Request ..> UC_Persist : <<include>>
+UC_Accept ..> UC_Persist : <<include>>
+UC_Delay ..> UC_Persist : <<include>>
+
+note right of UC_Compat
+  Rules:
+  length <= maxLength
+  beam <= maxBeam
+  draft <= minDepth
+  Preliminary check only.
+end note
+
+note bottom of UC_Arrival
+  Private gate codes, slip numbers,
+  and VHF channels are hidden until
+  booking status = accepted.
+end note
+
+legend right
+  |= Actor |= Goal |
+  | Guest | Discover & understand the marketplace |
+  | Boater | Find fit, request dock, manage trips |
+  | Dock Owner | List berths, approve, manage arrivals |
+  | Platform | Authz, persistence, compatibility |
+endlegend
+
+@enduml

@@ -1,0 +1,167 @@
+@startuml AnchorDrop_Data_Model
+title AnchorDrop — MongoDB Data Model\nCollections · Fields · Relationships · Access Rules
+
+skinparam backgroundColor #F5F1E8
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam ArrowColor #0B1F33
+skinparam roundCorner 10
+
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #0B1F33
+  HeaderBackgroundColor #0B1F33
+  HeaderFontColor #F5F1E8
+  FontColor #0B1F33
+  AttributeFontColor #0B1F33
+}
+
+skinparam note {
+  BackgroundColor #FFF8EE
+  BorderColor #C6A56B
+  FontColor #0B1F33
+}
+
+skinparam package {
+  BackgroundColor #FFFFFF
+  BorderColor #C6A56B
+  FontColor #0B1F33
+  FontStyle bold
+}
+
+package "MongoDB Database: anchordrop" {
+
+  class User <<collection: users>> {
+    + _id : ObjectId
+    --
+    + name : string
+    + email : string «unique»
+    + passwordHash : string
+    + role : enum boater | dock_owner
+    + createdAt : Date
+    + updatedAt : Date
+    --
+    indexes: email unique
+  }
+
+  class Vessel <<collection: vessels>> {
+    + _id : ObjectId
+    --
+    + userId : ObjectId → User
+    + name : string
+    + type : string
+    + lengthFt : number
+    + beamFt : number
+    + draftFt : number
+    + registration : string
+    + createdAt : Date
+    + updatedAt : Date
+    --
+    indexes: userId
+  }
+
+  class Dock <<collection: docks>> {
+    + _id : ObjectId
+    --
+    + ownerId : ObjectId → User
+    + title : string
+    + location : string
+    + waterway : string
+    + dockType : string
+    + photos : string[]
+    + maxLengthFt : number
+    + maxBeamFt : number
+    + minDepthFt : number
+    + pricePerDay : number
+    + amenities : string[]
+    + availabilityNotes : string
+    + arrivalInstructions : string «PRIVATE»
+    + isActive : boolean
+    + createdAt : Date
+    + updatedAt : Date
+    --
+    indexes: ownerId
+    indexes: location, maxLengthFt, minDepthFt, pricePerDay
+  }
+
+  class Booking <<collection: bookings>> {
+    + _id : ObjectId
+    --
+    + boaterId : ObjectId → User
+    + ownerId : ObjectId → User
+    + dockId : ObjectId → Dock
+    + vesselId : ObjectId → Vessel
+    + startDate : Date
+    + endDate : Date
+    + status : enum pending | accepted | rejected | completed
+    + specialRequests : string
+    + delayEta : Date «optional»
+    + delayNote : string «optional»
+    + createdAt : Date
+    + updatedAt : Date
+    --
+    indexes: boaterId, ownerId, dockId, status, startDate
+  }
+}
+
+package "Derived Domain Logic (not a collection)" {
+  class CompatibilityResult <<value object>> {
+    + lengthOk : boolean
+    + beamOk : boolean
+    + draftOk : boolean
+    + compatible : boolean
+    --
+    rules:
+    lengthFt <= maxLengthFt
+    beamFt <= maxBeamFt
+    draftFt <= minDepthFt
+  }
+}
+
+User "1" as boater_role --> "*" Vessel : owns >
+User "1" as owner_role --> "*" Dock : lists >
+User "1" --> "*" Booking : requests as boater >
+User "1" --> "*" Booking : receives as owner >
+Dock "1" --> "*" Booking : reserved in >
+Vessel "1" --> "*" Booking : used in >
+
+Booking ..> CompatibilityResult : validated via
+Vessel ..> CompatibilityResult : input
+Dock ..> CompatibilityResult : input
+
+note right of Dock
+  **Public read rule**
+  Never return arrivalInstructions
+  on GET /api/docks or public detail.
+  Owners may read/edit their own field.
+end note
+
+note right of Booking
+  **Unlock rule**
+  Boater may see dock.arrivalInstructions
+  only when status == accepted
+  (and booking.boaterId == current user).
+end note
+
+note bottom of CompatibilityResult
+  Preliminary dimensional check only.
+  Does not certify navigational safety,
+  tides, or harbor authority clearance.
+end note
+
+legend right
+  |= Collection |= Primary job |
+  | users | Identity + role |
+  | vessels | Boater dimensions for fit |
+  | docks | Searchable supply + private arrival notes |
+  | bookings | Shared lifecycle between both sides |
+  |= Stack |= |
+  | Next.js App Router | API + UI |
+  | Mongoose / MongoDB | Persistence |
+  | No external DB API required | Local or Atlas URI |
+endlegend
+
+@enduml
