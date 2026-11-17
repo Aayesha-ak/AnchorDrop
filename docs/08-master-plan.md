@@ -51,14 +51,14 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 1.1 Confirm Node.js LTS (v20+ / v22+) installed  
-- [ ] 1.2 Scaffold Next.js App Router + TypeScript project in repo root (or agreed app root)  
-- [ ] 1.3 Initialize `package.json` scripts: `dev`, `build`, `start`, `seed`, `test` (stubs OK)  
-- [ ] 1.4 Add ESLint + Prettier baseline  
-- [ ] 1.5 Create `.gitignore` (node_modules, `.env.local`, build output, etc.)  
-- [ ] 1.6 Create `.env.local.example` with `MONGODB_URI`, `AUTH_SECRET`, app URL  
-- [ ] 1.7 Verify `npm install` and `npm run dev` open a blank app on `http://localhost:3000`  
-- [ ] 1.8 Align any old `launch.json` port notes to Next default **3000** (or document intentional override)
+- [x] 1.1 Confirm Node.js LTS (v20+ / v22+) installed  
+- [x] 1.2 Scaffold Next.js App Router + TypeScript project in repo root (or agreed app root)  
+- [x] 1.3 Initialize `package.json` scripts: `dev`, `build`, `start`, `seed`, `test` (stubs OK)  
+- [x] 1.4 Add ESLint + Prettier baseline  
+- [x] 1.5 Create `.gitignore` (node_modules, `.env.local`, build output, etc.)  
+- [x] 1.6 Create `.env.local.example` with `MONGODB_URI`, `AUTH_SECRET`, app URL  
+- [x] 1.7 Verify `npm install` and `npm run dev` open a blank app on `http://localhost:3000`  
+- [x] 1.8 Align any old `launch.json` port notes to Next default **3000** (or document intentional override)
 
 **Phase Exit Gate:** Dev server runs cleanly with TypeScript enabled.
 
@@ -70,13 +70,13 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 2.1 Confirm stack lock: Next.js + MongoDB (not Express + SQLite)  
-- [ ] 2.2 Confirm scope lock: web portal only; no payments/maps/SMS required  
-- [ ] 2.3 Confirm demo accounts list matches product docs  
-- [ ] 2.4 Confirm brand tokens and hero copy locked  
-- [ ] 2.5 Keep `docs/` as source of truth during build; update only if decisions change  
+- [x] 2.1 Confirm stack lock: Next.js + MongoDB (not Express + SQLite)  
+- [x] 2.2 Confirm scope lock: web portal only; no payments/maps/SMS required  
+- [x] 2.3 Confirm demo accounts list matches product docs  
+- [x] 2.4 Confirm brand tokens and hero copy locked  
+- [x] 2.5 Keep `docs/` as source of truth during build; update only if decisions change  
 
-**Phase Exit Gate:** Team/builder agrees docs 03–08 are the execution baseline.
+**Phase Exit Gate:** Team/builder agrees docs 03–08 are the execution baseline. Passed.
 
 ---
 
@@ -86,14 +86,14 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 3.1 Create `styles/tokens` for colors, typography, spacing, radii, shadows, motion durations  
-- [ ] 3.2 Create global base styles (cream canvas, navy text defaults, link/focus styles)  
-- [ ] 3.3 Load Georgia for headings + sans for UI  
-- [ ] 3.4 Define status color tokens (pending/accepted/rejected/completed/delay)  
-- [ ] 3.5 Define Harbor Night / Day Deck / Slip Card surface patterns  
-- [ ] 3.6 Add `prefers-reduced-motion` baseline rule  
+- [x] 3.1 Create `styles/tokens` for colors, typography, spacing, radii, shadows, motion durations  
+- [x] 3.2 Create global base styles (cream canvas, navy text defaults, link/focus styles)  
+- [x] 3.3 Load Georgia for headings + sans for UI  
+- [x] 3.4 Define status color tokens (pending/accepted/rejected/completed/delay)  
+- [x] 3.5 Define Harbor Night / Day Deck / Slip Card surface patterns  
+- [x] 3.6 Add `prefers-reduced-motion` baseline rule  
 
-**Phase Exit Gate:** A sample page can show navy/gold/cream + heading/body styles correctly.
+**Phase Exit Gate:** A sample page can show navy/gold/cream + heading/body styles correctly. Passed.
 
 ---
 
@@ -103,14 +103,14 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 4.1 Build Logo / BrandMark component (**AnchorDrop** visible, brand-first)  
-- [ ] 4.2 Build Public Header (Explore, How It Works, Sign In, Register)  
-- [ ] 4.3 Build Footer (About, Contact, Terms, Privacy, © 2026)  
-- [ ] 4.4 Build root `layout` with providers placeholder  
-- [ ] 4.5 Add mobile nav drawer behavior  
-- [ ] 4.6 Add scroll behavior plan for nav (transparent over hero → solid)  
+- [x] 4.1 Build Logo / BrandMark component (**AnchorDrop** visible, brand-first)  
+- [x] 4.2 Build Public Header (Explore, How It Works, Sign In, Register)  
+- [x] 4.3 Build Footer (About, Contact, Terms, Privacy, © 2026)  
+- [x] 4.4 Build root `layout` with providers placeholder  
+- [x] 4.5 Add mobile nav drawer behavior  
+- [x] 4.6 Add scroll behavior plan for nav (transparent over hero → solid)  
 
-**Phase Exit Gate:** Empty routes still look on-brand with header/footer.
+**Phase Exit Gate:** Empty routes still look on-brand with header/footer. Passed.
 
 ---
 
@@ -120,15 +120,15 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 5.1 Install MongoDB locally **or** provision Atlas URI  
-- [ ] 5.2 Implement `lib/db` connection helper (singleton-safe for Next)  
-- [ ] 5.3 Implement `lib/constants` (roles, booking statuses)  
-- [ ] 5.4 Implement `lib/errors` standard JSON error shape  
-- [ ] 5.5 Implement `lib/password` (hash + verify with bcryptjs)  
-- [ ] 5.6 Verify connection with a trivial health check or startup log (dev only)  
-- [ ] 5.7 Ensure `.env.local` is present locally and not committed  
+- [x] 5.1 Install MongoDB locally **or** provision Atlas URI  
+- [x] 5.2 Implement `lib/db` connection helper (singleton-safe for Next)  
+- [x] 5.3 Implement `lib/constants` (roles, booking statuses)  
+- [x] 5.4 Implement `lib/errors` standard JSON error shape  
+- [x] 5.5 Implement `lib/password` (hash + verify with bcryptjs)  
+- [x] 5.6 Verify connection with a trivial health check or startup log (dev only)  
+- [x] 5.7 Ensure `.env.local` is present locally and not committed  
 
-**Phase Exit Gate:** App connects to MongoDB without runtime connection errors.
+**Phase Exit Gate:** App connects to MongoDB without runtime connection errors. Passed.
 
 ---
 
@@ -138,14 +138,14 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 6.1 Create `User` model (name, email unique, passwordHash, role, timestamps)  
-- [ ] 6.2 Create `Vessel` model (userId, name, type, lengthFt, beamFt, draftFt, registration)  
-- [ ] 6.3 Create `Dock` model (ownerId, public fields, private `arrivalInstructions`, pricing, amenities, dims/depth)  
-- [ ] 6.4 Create `Booking` model (boaterId, ownerId, dockId, vesselId, dates, status, specialRequests, delay fields)  
-- [ ] 6.5 Add indexes: users.email; vessels.userId; docks.ownerId + filter fields; bookings by role ids/status/dates  
-- [ ] 6.6 Document delete policy for vessels/docks with active bookings (block or soft-deactivate)  
+- [x] 6.1 Create `User` model (name, email unique, passwordHash, role, timestamps)  
+- [x] 6.2 Create `Vessel` model (userId, name, type, lengthFt, beamFt, draftFt, registration)  
+- [x] 6.3 Create `Dock` model (ownerId, public fields, private `arrivalInstructions`, pricing, amenities, dims/depth)  
+- [x] 6.4 Create `Booking` model (boaterId, ownerId, dockId, vesselId, dates, status, specialRequests, delay fields)  
+- [x] 6.5 Add indexes: users.email; vessels.userId; docks.ownerId + filter fields; bookings by role ids/status/dates  
+- [x] 6.6 Document delete policy for vessels/docks with active bookings (block or soft-deactivate)  
 
-**Phase Exit Gate:** Models compile; indexes defined; relationships match diagram `04-data-model`.
+**Phase Exit Gate:** Models compile; indexes defined; relationships match diagram `04-data-model`. Passed.
 
 ---
 
@@ -155,14 +155,14 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 7.1 Auth schemas (register/login)  
-- [ ] 7.2 Vessel schemas (create/update)  
-- [ ] 7.3 Dock schemas (create/update + query filters)  
-- [ ] 7.4 Booking schemas (create, status patch, delay patch, compatibility request)  
-- [ ] 7.5 Confirm date rule: end date ≥ start date  
-- [ ] 7.6 Confirm dimension/price/depth positivity rules  
+- [x] 7.1 Auth schemas (register/login)  
+- [x] 7.2 Vessel schemas (create/update)  
+- [x] 7.3 Dock schemas (create/update + query filters)  
+- [x] 7.4 Booking schemas (create, status patch, delay patch, compatibility request)  
+- [x] 7.5 Confirm date rule: end date ≥ start date  
+- [x] 7.6 Confirm dimension/price/depth positivity rules  
 
-**Phase Exit Gate:** Schemas ready to mount on all mutating/search routes.
+**Phase Exit Gate:** Schemas ready to mount on all mutating/search routes. Passed.
 
 ---
 
@@ -172,17 +172,17 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 8.1 Implement `auth.service` / `user.service`  
-- [ ] 8.2 `POST /api/auth/register`  
-- [ ] 8.3 `POST /api/auth/login`  
-- [ ] 8.4 `POST /api/auth/logout`  
-- [ ] 8.5 `GET /api/auth/me`  
-- [ ] 8.6 Session/JWT cookie issue + read helpers in `lib/auth`  
-- [ ] 8.7 Never return `passwordHash`  
-- [ ] 8.8 Duplicate email → conflict error  
-- [ ] 8.9 Role must be `boater` or `dock_owner`  
+- [x] 8.1 Implement `auth.service` / `user.service`  
+- [x] 8.2 `POST /api/auth/register`  
+- [x] 8.3 `POST /api/auth/login`  
+- [x] 8.4 `POST /api/auth/logout`  
+- [x] 8.5 `GET /api/auth/me`  
+- [x] 8.6 Session/JWT cookie issue + read helpers in `lib/auth`  
+- [x] 8.7 Never return `passwordHash`  
+- [x] 8.8 Duplicate email → conflict error  
+- [x] 8.9 Role must be `boater` or `dock_owner`  
 
-**Phase Exit Gate:** Register/login/me/logout verified via API client or tests.
+**Phase Exit Gate:** Register/login/me/logout verified via API client or tests. Passed.
 
 ---
 
