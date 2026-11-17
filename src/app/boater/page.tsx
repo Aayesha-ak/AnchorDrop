@@ -1,10 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "@/hooks/useAuth";
-
 export default function BoaterDashboardPage() {
-  const { user } = useAuth();
 
   return (
     <div>
