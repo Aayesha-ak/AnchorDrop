@@ -376,15 +376,15 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 19.1 `PATCH /api/bookings/:id/delay` (boater only)  
-- [ ] 19.2 Store `delayEta` + `delayNote`  
-- [ ] 19.3 Boater DelayForm on accepted trip  
-- [ ] 19.4 Owner Arrivals page: today’s accepted bookings  
-- [ ] 19.5 Delay alerts panel with visual priority  
-- [ ] 19.6 Optional one-time badge attention motion for new delay  
-- [ ] 19.7 Owner can open related booking/request context  
+- [x] 19.1 `PATCH /api/bookings/:id/delay` (boater only)  
+- [x] 19.2 Store `delayEta` + `delayNote`  
+- [x] 19.3 Boater DelayForm on accepted trip  
+- [x] 19.4 Owner Arrivals page: today’s accepted bookings  
+- [x] 19.5 Delay alerts panel with visual priority  
+- [x] 19.6 Optional one-time badge attention motion for new delay  
+- [x] 19.7 Owner can open related booking/request context  
 
-**Phase Exit Gate:** Delay submitted by boater appears on owner arrivals without external messaging tools.
+**Phase Exit Gate:** Delay submitted by boater appears on owner arrivals without external messaging tools. Passed.
 
 ---
 
@@ -394,15 +394,15 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 20.1 Owner dashboard shell nav (Berths, Requests, Arrivals)  
-- [ ] 20.2 Berths list page  
-- [ ] 20.3 Create berth page/form sections: basics, dims/depth, pricing, amenities, availability, **private arrival notes**  
-- [ ] 20.4 Edit berth flow  
-- [ ] 20.5 Delete/deactivate with confirmation  
-- [ ] 20.6 Private notes helper copy: shared only after accept  
-- [ ] 20.7 Empty state for no berths yet  
+- [x] 20.1 Owner dashboard shell nav (Berths, Requests, Arrivals)  
+- [x] 20.2 Berths list page  
+- [x] 20.3 Create berth page/form sections: basics, dims/depth, pricing, amenities, availability, **private arrival notes**  
+- [x] 20.4 Edit berth flow  
+- [x] 20.5 Delete/deactivate with confirmation  
+- [x] 20.6 Private notes helper copy: shared only after accept  
+- [x] 20.7 Empty state for no berths yet  
 
-**Phase Exit Gate:** Owner can fully manage listings from UI; new berth appears in Explore.
+**Phase Exit Gate:** Owner can fully manage listings from UI; new berth appears in Explore. Passed.
 
 ---
 
@@ -412,16 +412,16 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 21.1 Implement `scripts/seed` using real hashing + models  
-- [ ] 21.2 Seed Captain Alex + 2 vessels + sample booking(s)  
-- [ ] 21.3 Seed Marina Del Sol + 3 docks + pending requests  
-- [ ] 21.4 Seed Sarah Jenkins + private Fort Lauderdale dock  
-- [ ] 21.5 Mix booking statuses (pending, accepted with instructions, completed)  
-- [ ] 21.6 Document re-seed behavior (idempotent or reset+seed)  
-- [ ] 21.7 Wire demo buttons to exact seeded credentials  
-- [ ] 21.8 Run full demo script from [04 Solution Approach](./04-solution-approach.md) walkthrough  
+- [x] 21.1 Implement `scripts/seed` using real hashing + models  
+- [x] 21.2 Seed Captain Alex + 2 vessels + sample booking(s)  
+- [x] 21.3 Seed Marina Del Sol + 3 docks + pending requests  
+- [x] 21.4 Seed Sarah Jenkins + private Fort Lauderdale dock  
+- [x] 21.5 Mix booking statuses (pending, accepted with instructions, completed)  
+- [x] 21.6 Document re-seed behavior (idempotent or reset+seed)  
+- [x] 21.7 Wire demo buttons to exact seeded credentials  
+- [x] 21.8 Run full demo script from [04 Solution Approach](./04-solution-approach.md) walkthrough  
 
-**Phase Exit Gate:** `npm run seed` then demo login completes the marketplace story without manual data entry.
+**Phase Exit Gate:** `npm run seed` then demo login completes the marketplace story without manual data entry. Passed.
 
 ---
 
@@ -431,16 +431,16 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 22.1 Toast system for success/error across CRUD  
-- [ ] 22.2 Confirm dialogs for destructive/reject actions  
-- [ ] 22.3 Skeleton loaders on major lists  
-- [ ] 22.4 Empty states for vessels, docks, trips, requests, arrivals  
-- [ ] 22.5 Inline form validation messages  
-- [ ] 22.6 Global error boundary / route error UI  
-- [ ] 22.7 403 page for forbidden role access  
-- [ ] 22.8 Consistent API error mapping in `api-client`  
+- [x] 22.1 Toast system for success/error across CRUD  
+- [x] 22.2 Confirm dialogs for destructive/reject actions  
+- [x] 22.3 Skeleton loaders on major lists  
+- [x] 22.4 Empty states for vessels, docks, trips, requests, arrivals  
+- [x] 22.5 Inline form validation messages  
+- [x] 22.6 Global error boundary / route error UI  
+- [x] 22.7 403 page for forbidden role access  
+- [x] 22.8 Consistent API error mapping in `api-client`  
 
-**Phase Exit Gate:** Breaking a form or emptying a list still looks intentional and on-brand.
+**Phase Exit Gate:** Breaking a form or emptying a list still looks intentional and on-brand. Passed.
 
 ---
 
@@ -450,16 +450,16 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 23.1 Implement planned motions from frontend plan §4 (hero, nav, modal, tabs, unlock, toast, filter)  
-- [ ] 23.2 Verify reduced-motion disables non-essential animation  
-- [ ] 23.3 Mobile layout QA: homepage, explore, auth, both dashboards  
-- [ ] 23.4 Tablet/desktop QA for grids and side nav  
-- [ ] 23.5 Keyboard navigation through modals and forms  
-- [ ] 23.6 Visible focus states  
-- [ ] 23.7 Status not color-only (text + icon)  
-- [ ] 23.8 Contrast check on navy/gold/cream combinations  
-- [ ] 23.9 Icon set consistency (one library; no emoji chrome)  
-- [ ] 23.10 Image alt text on hero/listing imagery  
+- [x] 23.1 Implement planned motions from frontend plan §4 (hero, nav, modal, tabs, unlock, toast, filter)  
+- [x] 23.2 Verify reduced-motion disables non-essential animation  
+- [x] 23.3 Mobile layout QA: homepage, explore, auth, both dashboards  
+- [x] 23.4 Tablet/desktop QA for grids and side nav  
+- [x] 23.5 Keyboard navigation through modals and forms  
+- [x] 23.6 Visible focus states  
+- [x] 23.7 Status not color-only (text + icon)  
+- [x] 23.8 Contrast check on navy/gold/cream combinations  
+- [x] 23.9 Icon set consistency (one library; no emoji chrome)  
+- [x] 23.10 Image alt text on hero/listing imagery  
 
 **Phase Exit Gate:** Responsive + a11y checklist signed off for v1.
 

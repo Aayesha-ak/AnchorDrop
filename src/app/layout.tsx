@@ -3,6 +3,8 @@ import "@/styles/globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Providers from "@/components/layout/Providers";
+import AccessibilityEnhancements from "@/components/layout/AccessibilityEnhancements";
+import { ToastProvider } from "@/context/ToastContext";
 
 export const metadata: Metadata = {
   title: "AnchorDrop — Your Place on the Water!",
@@ -18,14 +20,19 @@ export default function RootLayout({
     <html lang="en">
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         <Providers>
-          {/* Public App Header with responsive drawer & sticky navigation */}
-          <Header />
+          <ToastProvider>
+            {/* Screen reader skip-link & live announcer */}
+            <AccessibilityEnhancements />
 
-          {/* Primary Page Content */}
-          <div style={{ flex: 1 }}>{children}</div>
+            {/* Public App Header with responsive drawer & sticky navigation */}
+            <Header />
 
-          {/* Global Harbor Night Footer */}
-          <Footer />
+            {/* Primary Page Content */}
+            <div id="main-content" style={{ flex: 1 }}>{children}</div>
+
+            {/* Global Harbor Night Footer */}
+            <Footer />
+          </ToastProvider>
         </Providers>
       </body>
     </html>

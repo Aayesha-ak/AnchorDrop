@@ -1,0 +1,256 @@
+/* ==========================================================================
+   AnchorDrop Motion & Accessibility Styles
+   Brand Alignment: Luxury, Trust, Adventure (Calm, intentional motion)
+   Reference: docs/06-frontend-plan.md §4 & Phase 23 Specs
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Keyframe Animations
+   -------------------------------------------------------------------------- */
+
+/**
+ * Skeleton loading shimmer
+ * Linear gradient shimmer across placeholder elements
+ */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/**
+ * Fade in entrance
+ * Standard opacity transition for cards, dialogs, and route views
+ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/**
+ * Slide up entrance
+ * Upward translation combined with fade for hero, cards, and drawers
+ */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/**
+ * Soft glowing pulse for unlocked arrival instructions
+ * Single-cycle reassurance pulse when credentials become available
+ */
+@keyframes arrivalPulse {
+  0% {
+    transform: scale(0.99);
+    box-shadow: 0 0 0 0 rgba(198, 165, 107, 0.6);
+  }
+  50% {
+    transform: scale(1.008);
+    box-shadow: 0 0 0 8px rgba(198, 165, 107, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 20px rgba(198, 165, 107, 0.18);
+  }
+}
+
+/**
+ * Attention pulse for delay alert badges
+ * Controlled warning pulse alerting hosts/boaters to ETA changes
+ */
+@keyframes badgeAttention {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(184, 115, 4, 0.5);
+  }
+  40% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 6px rgba(184, 115, 4, 0.2);
+  }
+  80% {
+    transform: scale(0.98);
+    box-shadow: 0 0 0 2px rgba(184, 115, 4, 0.05);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/**
+ * Modal dialog entrance
+ */
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/**
+ * Toast / notification slide-in
+ */
+@keyframes toastEnter {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Motion Utility Classes
+   -------------------------------------------------------------------------- */
+
+.animate-shimmer,
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(11, 31, 51, 0.04) 25%,
+    rgba(11, 31, 51, 0.10) 50%,
+    rgba(11, 31, 51, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite ease-in-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp var(--motion-duration-smooth, 400ms) var(--motion-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+}
+
+.animate-arrival-pulse {
+  animation: arrivalPulse 1.2s var(--motion-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) 1 forwards;
+}
+
+.animate-badge-attention {
+  animation: badgeAttention 1s var(--motion-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) 1;
+}
+
+.animate-modal {
+  animation: modalEnter var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+}
+
+.animate-toast {
+  animation: toastEnter var(--motion-duration-normal, 250ms) var(--motion-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+}
+
+.animate-hero-entrance {
+  animation: slideUp 600ms var(--motion-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+}
+
+/* --------------------------------------------------------------------------
+   3. Accessible Focus Rings (:focus-visible)
+   -------------------------------------------------------------------------- */
+
+/**
+ * High-contrast gold / navy outline on all interactive elements
+ * Meets WCAG 2.1 AA 1.4.11 Non-text Contrast (3:1 minimum for UI components)
+ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px rgba(11, 31, 51, 0.35);
+}
+
+/* Dark surface focus contrast adjustment (Harbor Night) */
+.surface-harbor-night a:focus-visible,
+.surface-harbor-night button:focus-visible,
+.surface-harbor-night input:focus-visible,
+.surface-harbor-night select:focus-visible,
+.surface-harbor-night textarea:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(6, 17, 28, 0.8);
+}
+
+/* --------------------------------------------------------------------------
+   4. Screen Reader Utilities & Skip Links
+   -------------------------------------------------------------------------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -9999px;
+  left: var(--space-4);
+  z-index: 9999;
+  background-color: var(--color-navy);
+  color: var(--color-gold);
+  padding: var(--space-3) var(--space-6);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  border: 2px solid var(--color-gold);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-modal);
+  text-decoration: none;
+  transition: top 150ms ease-out;
+}
+
+.skip-to-content:focus {
+  top: var(--space-4);
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Reduced Motion Enforcement
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-shimmer,
+  .skeleton-shimmer {
+    background-image: none !important;
+    background-color: rgba(11, 31, 51, 0.08) !important;
+    animation: none !important;
+  }
+}
