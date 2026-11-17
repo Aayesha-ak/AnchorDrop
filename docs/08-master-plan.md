@@ -471,17 +471,17 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 24.1 Test/script: register/login/role authorization  
-- [ ] 24.2 Test/script: vessel CRUD + ownership denial  
-- [ ] 24.3 Test/script: dock CRUD + public private-field stripping  
-- [ ] 24.4 Test/script: compatibility pass/fail constraints  
-- [ ] 24.5 Test/script: booking create → accept → arrival instructions present  
-- [ ] 24.6 Test/script: reject path hides instructions  
-- [ ] 24.7 Test/script: delay flow owner-visible  
-- [ ] 24.8 `npm test` documented in README  
-- [ ] 24.9 Manual smoke checklist saved/reused for releases  
+- [x] 24.1 Test/script: register/login/role authorization  
+- [x] 24.2 Test/script: vessel CRUD + ownership denial  
+- [x] 24.3 Test/script: dock CRUD + public private-field stripping  
+- [x] 24.4 Test/script: compatibility pass/fail constraints  
+- [x] 24.5 Test/script: booking create → accept → arrival instructions present  
+- [x] 24.6 Test/script: reject path hides instructions  
+- [x] 24.7 Test/script: delay flow owner-visible  
+- [x] 24.8 `npm test` documented in README  
+- [x] 24.9 Manual smoke checklist saved/reused for releases  
 
-**Phase Exit Gate:** Automated verification passes on seeded/test DB; failures are actionable.
+**Phase Exit Gate:** Automated verification passes on seeded/test DB; failures are actionable. Passed.
 
 ---
 
@@ -491,18 +491,18 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 25.1 End-to-end integration run: guest explore → boater request → owner accept → unlock → delay → complete  
-- [ ] 25.2 Confirm no required external API keys for core demo  
-- [ ] 25.3 Write/update root `README.md` (setup, seed, start, demo accounts, stack)  
-- [ ] 25.4 Confirm docs cross-links include 07 + 08  
-- [ ] 25.5 Confirm folder structure matches [07 Combined Structure](./07-combined-project-structure.md) (or document intentional deltas)  
-- [ ] 25.6 Remove dead prototype conflicts (old Express/SQLite assumptions) from active README if present  
-- [ ] 25.7 Final brand sweep (no off-token colors; hero brand-first)  
-- [ ] 25.8 Mark all prior phase exit gates as passed  
-- [ ] 25.9 Stakeholder demo rehearsal completed successfully  
-- [ ] 25.10 Tag v1 complete for this master plan scope  
+- [x] 25.1 End-to-end integration run: guest explore → boater request → owner accept → unlock → delay → complete  
+- [x] 25.2 Confirm no required external API keys for core demo  
+- [x] 25.3 Write/update root `README.md` (setup, seed, start, demo accounts, stack)  
+- [x] 25.4 Confirm docs cross-links include 07 + 08  
+- [x] 25.5 Confirm folder structure matches [07 Combined Structure](./07-combined-project-structure.md) (or document intentional deltas)  
+- [x] 25.6 Remove dead prototype conflicts (old Express/SQLite assumptions) from active README if present  
+- [x] 25.7 Final brand sweep (no off-token colors; hero brand-first)  
+- [x] 25.8 Mark all prior phase exit gates as passed  
+- [x] 25.9 Stakeholder demo rehearsal completed successfully  
+- [x] 25.10 Tag v1 complete for this master plan scope  
 
-**Phase Exit Gate:** Fresh machine path works: install → env → seed → dev → full demo walkthrough.
+**Phase Exit Gate:** Fresh machine path works: install → env → seed → dev → full demo walkthrough. Passed. (v1 COMPLETE)
 
 ---
 

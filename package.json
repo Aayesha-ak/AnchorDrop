@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx scripts/seed.ts",
-    "test": "echo \"Test suite stub - implemented in Phase 24\" && exit 0"
+    "test": "tsx scripts/test-regression.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
