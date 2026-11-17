@@ -192,16 +192,16 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 9.1 Auth modal and/or `/login` + `/register` pages  
-- [ ] 9.2 Role selector on register  
-- [ ] 9.3 Session-aware header (Sign In vs Dashboard/Logout)  
-- [ ] 9.4 Demo credential buttons (Alex, Marina Del Sol, Sarah) autofill  
-- [ ] 9.5 `useAuth` / auth provider wiring  
-- [ ] 9.6 Protect `/boater/**` and `/owner/**` layouts (redirect unauthenticated)  
-- [ ] 9.7 Wrong-role access shows 403/friendly redirect  
-- [ ] 9.8 Modal focus trap + Esc close + accessible labels  
+- [x] 9.1 Auth modal and/or `/login` + `/register` pages  
+- [x] 9.2 Role selector on register  
+- [x] 9.3 Session-aware header (Sign In vs Dashboard/Logout)  
+- [x] 9.4 Demo credential buttons (Alex, Marina Del Sol, Sarah) autofill  
+- [x] 9.5 `useAuth` / auth provider wiring  
+- [x] 9.6 Protect `/boater/**` and `/owner/**` layouts (redirect unauthenticated)  
+- [x] 9.7 Wrong-role access shows 403/friendly redirect  
+- [x] 9.8 Modal focus trap + Esc close + accessible labels  
 
-**Phase Exit Gate:** Manual login as each role lands in the correct shell.
+**Phase Exit Gate:** Manual login as each role lands in the correct shell. Passed.
 
 ---
 
