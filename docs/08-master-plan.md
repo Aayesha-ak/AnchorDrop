@@ -211,12 +211,12 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 10.1 Implement serializers to strip `passwordHash` always  
-- [ ] 10.2 Strip `arrivalInstructions` from all public dock responses  
-- [ ] 10.3 Implement `arrival.service` decision helper (when unlock is allowed)  
-- [ ] 10.4 Add regression checklist item: public dock detail never includes gate/slip/VHF private notes  
+- [x] 10.1 Implement serializers to strip `passwordHash` always  
+- [x] 10.2 Strip `arrivalInstructions` from all public dock responses  
+- [x] 10.3 Implement `arrival.service` decision helper (when unlock is allowed)  
+- [x] 10.4 Add regression checklist item: public dock detail never includes gate/slip/VHF private notes  
 
-**Phase Exit Gate:** Public dock payloads inspected and confirmed clean of private arrival fields.
+**Phase Exit Gate:** Public dock payloads inspected and confirmed clean of private arrival fields. Passed.
 
 ---
 
@@ -226,15 +226,15 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 11.1 Implement `dock.service`  
-- [ ] 11.2 `GET /api/docks` with filters (location/waterway, type, max length, min depth, max price, active)  
-- [ ] 11.3 `GET /api/docks/:id` public detail (safe fields only)  
-- [ ] 11.4 `POST /api/docks` owner create  
-- [ ] 11.5 `PUT /api/docks/:id` owner update (ownership enforced)  
-- [ ] 11.6 `DELETE /api/docks/:id` owner delete/deactivate (ownership + booking policy)  
-- [ ] 11.7 Owner can read/edit own `arrivalInstructions` via owner paths only  
+- [x] 11.1 Implement `dock.service`  
+- [x] 11.2 `GET /api/docks` with filters (location/waterway, type, max length, min depth, max price, active)  
+- [x] 11.3 `GET /api/docks/:id` public detail (safe fields only)  
+- [x] 11.4 `POST /api/docks` owner create  
+- [x] 11.5 `PUT /api/docks/:id` owner update (ownership enforced)  
+- [x] 11.6 `DELETE /api/docks/:id` owner delete/deactivate (ownership + booking policy)  
+- [x] 11.7 Owner can read/edit own `arrivalInstructions` via owner paths only  
 
-**Phase Exit Gate:** Owner CRUD works; public list/detail works; private fields stay private.
+**Phase Exit Gate:** Owner CRUD works; public list/detail works; private fields stay private. Passed.
 
 ---
 
@@ -244,15 +244,15 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 12.1 Hero: full-bleed image, navy overlay, brand, **Your Place on the Water!**, **Discover. Dock. Unwind.**, one short support line, CTA group only  
-- [ ] 12.2 No cards/stat strips/promo chips in first viewport  
-- [ ] 12.3 Hero entrance motion (respect reduced motion)  
-- [ ] 12.4 How It Works dual-audience section (boater vs owner) with toggle/columns  
-- [ ] 12.5 Wire nav anchors/links  
-- [ ] 12.6 About / Contact / Terms / Privacy stub pages linked from footer  
-- [ ] 12.7 404 branded page  
+- [x] 12.1 Hero: full-bleed image, navy overlay, brand, **Your Place on the Water!**, **Discover. Dock. Unwind.**, one short support line, CTA group only  
+- [x] 12.2 No cards/stat strips/promo chips in first viewport  
+- [x] 12.3 Hero entrance motion (respect reduced motion)  
+- [x] 12.4 How It Works dual-audience section (boater vs owner) with toggle/columns  
+- [x] 12.5 Wire nav anchors/links  
+- [x] 12.6 About / Contact / Terms / Privacy stub pages linked from footer  
+- [x] 12.7 404 branded page  
 
-**Phase Exit Gate:** Homepage passes brand-first viewport test on desktop and mobile.
+**Phase Exit Gate:** Homepage passes brand-first viewport test on desktop and mobile. Passed.
 
 ---
 
@@ -262,16 +262,16 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 13.1 Explore page/section with FilterBar  
-- [ ] 13.2 DockCard / DockGrid results  
-- [ ] 13.3 Results count + clear filters + empty state  
-- [ ] 13.4 Soft results transition/stagger on filter changes  
-- [ ] 13.5 Dock detail page: gallery, specs, depth, amenities, price, availability  
-- [ ] 13.6 CTA “Request to book” (auth-aware)  
-- [ ] 13.7 Explicit UI note that private arrival info is not public  
-- [ ] 13.8 Loading skeletons for list/detail  
+- [x] 13.1 Explore page/section with FilterBar  
+- [x] 13.2 DockCard / DockGrid results  
+- [x] 13.3 Results count + clear filters + empty state  
+- [x] 13.4 Soft results transition/stagger on filter changes  
+- [x] 13.5 Dock detail page: gallery, specs, depth, amenities, price, availability  
+- [x] 13.6 CTA “Request to book” (auth-aware)  
+- [x] 13.7 Explicit UI note that private arrival info is not public  
+- [x] 13.8 Loading skeletons for list/detail  
 
-**Phase Exit Gate:** Guest can filter docks and open a detail page end-to-end.
+**Phase Exit Gate:** Guest can filter docks and open a detail page end-to-end. Passed.
 
 ---
 
