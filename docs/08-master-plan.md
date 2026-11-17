@@ -281,16 +281,16 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 14.1 Implement `vessel.service`  
-- [ ] 14.2 `GET/POST /api/vessels`  
-- [ ] 14.3 `PUT/DELETE /api/vessels/:id` with ownership checks  
-- [ ] 14.4 Boater dashboard shell (nav: Explore & Book, My Vessels, My Trips)  
-- [ ] 14.5 Vessels page list + empty state  
-- [ ] 14.6 Vessel create/edit form (name, type, LOA, beam, draft, registration)  
-- [ ] 14.7 Delete confirm dialog  
-- [ ] 14.8 Toasts for save/delete success/failure  
+- [x] 14.1 Implement `vessel.service`  
+- [x] 14.2 `GET/POST /api/vessels`  
+- [x] 14.3 `PUT/DELETE /api/vessels/:id` with ownership checks  
+- [x] 14.4 Boater dashboard shell (nav: Explore & Book, My Vessels, My Trips)  
+- [x] 14.5 Vessels page list + empty state  
+- [x] 14.6 Vessel create/edit form (name, type, LOA, beam, draft, registration)  
+- [x] 14.7 Delete confirm dialog  
+- [x] 14.8 Toasts for save/delete success/failure  
 
-**Phase Exit Gate:** Boater can add/edit/delete vessels; User A cannot mutate User B vessels.
+**Phase Exit Gate:** Boater can add/edit/delete vessels; User A cannot mutate User B vessels. Passed.
 
 ---
 
@@ -300,16 +300,16 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 15.1 Implement `compatibility.service` (single source of truth)  
-- [ ] 15.2 Rules: length ≤ maxLength; beam ≤ maxBeam; draft ≤ minDepth  
-- [ ] 15.3 Return per-constraint booleans + overall `compatible`  
-- [ ] 15.4 `POST /api/bookings/check-compatibility`  
-- [ ] 15.5 CompatibilityPanel UI with constraint rows  
-- [ ] 15.6 Result transition animation  
-- [ ] 15.7 Product copy: preliminary check, not navigational safety guarantee  
-- [ ] 15.8 Verify known pass case (42/13/4 vs 50/15/6) and fail cases  
+- [x] 15.1 Implement `compatibility.service` (single source of truth)  
+- [x] 15.2 Rules: length ≤ maxLength; beam ≤ maxBeam; draft ≤ minDepth  
+- [x] 15.3 Return per-constraint booleans + overall `compatible`  
+- [x] 15.4 `POST /api/bookings/check-compatibility`  
+- [x] 15.5 CompatibilityPanel UI with constraint rows  
+- [x] 15.6 Result transition animation  
+- [x] 15.7 Product copy: preliminary check, not navigational safety guarantee  
+- [x] 15.8 Verify known pass case (42/13/4 vs 50/15/6) and fail cases  
 
-**Phase Exit Gate:** API + UI agree on pass/fail; no client-only math as source of truth.
+**Phase Exit Gate:** API + UI agree on pass/fail; no client-only math as source of truth. Passed.
 
 ---
 
@@ -319,16 +319,16 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 16.1 Implement booking create in `booking.service` → status `pending`  
-- [ ] 16.2 Server re-checks compatibility on create  
-- [ ] 16.3 `POST /api/bookings`  
-- [ ] 16.4 Persist special requests + date range  
-- [ ] 16.5 Boater Explore & Book: vessel select + request form  
-- [ ] 16.6 Success path links to My Trips  
-- [ ] 16.7 Validation errors shown inline  
-- [ ] 16.8 Incompatible create blocked (or clearly rejected by policy)  
+- [x] 16.1 Implement booking create in `booking.service` → status `pending`  
+- [x] 16.2 Server re-checks compatibility on create  
+- [x] 16.3 `POST /api/bookings`  
+- [x] 16.4 Persist special requests + date range  
+- [x] 16.5 Boater Explore & Book: vessel select + request form  
+- [x] 16.6 Success path links to My Trips  
+- [x] 16.7 Validation errors shown inline  
+- [x] 16.8 Incompatible create blocked (or clearly rejected by policy)  
 
-**Phase Exit Gate:** Creating a booking yields a `pending` record visible to that boater.
+**Phase Exit Gate:** Creating a booking yields a `pending` record visible to that boater. Passed.
 
 ---
 
@@ -338,18 +338,18 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 17.1 `GET /api/bookings/boater`  
-- [ ] 17.2 `GET /api/bookings/owner` (includes boater + vessel summary)  
-- [ ] 17.3 `PATCH /api/bookings/:id/status` (accept / reject / complete)  
-- [ ] 17.4 Enforce owner-only status changes  
-- [ ] 17.5 Enforce allowed transitions (`pending→accepted|rejected`, `accepted→completed`)  
-- [ ] 17.6 Boater My Trips list + status filter chips + badges/icons  
-- [ ] 17.7 Trip detail timeline UI  
-- [ ] 17.8 Owner Requests list UI with Accept/Reject + confirm on reject  
-- [ ] 17.9 Owner request detail page  
-- [ ] 17.10 Toasts + list refresh after status change  
+- [x] 17.1 `GET /api/bookings/boater`  
+- [x] 17.2 `GET /api/bookings/owner` (includes boater + vessel summary)  
+- [x] 17.3 `PATCH /api/bookings/:id/status` (accept / reject / complete)  
+- [x] 17.4 Enforce owner-only status changes  
+- [x] 17.5 Enforce allowed transitions (`pending→accepted|rejected`, `accepted→completed`)  
+- [x] 17.6 Boater My Trips list + status filter chips + badges/icons  
+- [x] 17.7 Trip detail timeline UI  
+- [x] 17.8 Owner Requests list UI with Accept/Reject + confirm on reject  
+- [x] 17.9 Owner request detail page  
+- [x] 17.10 Toasts + list refresh after status change  
 
-**Phase Exit Gate:** Accept/reject updates both boater and owner views for the same booking id.
+**Phase Exit Gate:** Accept/reject updates both boater and owner views for the same booking id. Passed.
 
 ---
 
@@ -359,14 +359,14 @@ A boater can discover docks, check vessel fit, request a berth, get acceptance, 
 
 ### Sub-phases
 
-- [ ] 18.1 Arrival policy: include instructions for boater when status is `accepted` (and decided policy for `completed`)  
-- [ ] 18.2 Boater trip detail shows **locked** state while pending/rejected  
-- [ ] 18.3 Boater trip detail shows **unlocked** panel after accept (gate/slip/VHF etc.)  
-- [ ] 18.4 Lock→unlock micro-interaction  
-- [ ] 18.5 Confirm public dock endpoints still exclude instructions  
-- [ ] 18.6 Confirm another boater cannot read someone else’s unlocked booking  
+- [x] 18.1 Arrival policy: include instructions for boater when status is `accepted` (and decided policy for `completed`)  
+- [x] 18.2 Boater trip detail shows **locked** state while pending/rejected  
+- [x] 18.3 Boater trip detail shows **unlocked** panel after accept (gate/slip/VHF etc.)  
+- [x] 18.4 Lock→unlock micro-interaction  
+- [x] 18.5 Confirm public dock endpoints still exclude instructions  
+- [x] 18.6 Confirm another boater cannot read someone else’s unlocked booking  
 
-**Phase Exit Gate:** Security + UX unlock behavior verified manually and/or by tests.
+**Phase Exit Gate:** Security + UX unlock behavior verified manually and/or by tests. Passed.
 
 ---
 
