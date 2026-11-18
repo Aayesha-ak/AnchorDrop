@@ -28,18 +28,18 @@ export const APP_METADATA = {
 // Seeded demo accounts
 export const DEMO_ACCOUNTS = {
   BOATER: {
-    name: "Captain Alex Morgan",
-    email: "captain.alex@gmail.com",
+    name: "Captain Alex Vance",
+    email: "boater@anchordrop.com",
     role: USER_ROLES.BOATER,
   },
   MARINA_OWNER: {
-    name: "Marina Del Sol",
-    email: "marina.delsol@gmail.com",
+    name: "Marina Del Sol Harbor",
+    email: "owner@anchordrop.com",
     role: USER_ROLES.DOCK_OWNER,
   },
   PRIVATE_HOST: {
     name: "Sarah Jenkins",
-    email: "sarah.harbor@gmail.com",
+    email: "sarah@anchordrop.com",
     role: USER_ROLES.DOCK_OWNER,
   },
 };

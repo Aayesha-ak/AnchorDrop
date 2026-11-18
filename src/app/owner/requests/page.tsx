@@ -664,6 +664,23 @@ export default function OwnerRequestsPage() {
                   </div>
                 )}
 
+                {/* Dockside Payment Note */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "var(--space-2)",
+                    fontSize: "var(--font-size-xs)",
+                    color: "var(--color-text-secondary)",
+                    backgroundColor: "rgba(198, 165, 107, 0.1)",
+                    padding: "var(--space-2) var(--space-3)",
+                    borderRadius: "var(--radius-sm)",
+                  }}
+                >
+                  <span>💵</span>
+                  <span><strong>Payment Terms:</strong> Pay at Berth / Dockside Direct (${dock?.pricePerDay || 0}/day upon arrival).</span>
+                </div>
+
                 {/* Delay Notice (if boater reported delay) */}
                 {booking.delayEta && (
                   <div

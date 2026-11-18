@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { connectDB } from "@/lib/db";
 import { User, Vessel, Dock, Booking } from "@/models";
 import { hashPassword } from "@/lib/password";
@@ -68,7 +69,9 @@ async function cleanSeedData() {
  */
 export async function seedDatabase(): Promise<SeedResult> {
   console.log("⚓ Connecting to MongoDB for seeding...");
-  await connectDB();
+  if (mongoose.connection.readyState !== 1) {
+    await connectDB();
+  }
 
   console.log("🧹 Resetting existing test accounts and seed records (idempotent reset)...");
   await cleanSeedData();

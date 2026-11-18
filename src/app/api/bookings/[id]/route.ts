@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getBookingById } from "@/services/booking.service";
+import { cancelBoaterBooking } from "@/services/booking-lifecycle.service";
 import { canUnlockArrivalInstructions } from "@/services/arrival.service";
 import { requireAuth } from "@/lib/auth";
 import { handleApiError } from "@/lib/errors";
@@ -39,6 +40,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
       if (!isUnlocked) {
         delete dockObj.arrivalInstructions;
       }
+      bookingObj.dockId = dockObj;
       bookingObj.dock = dockObj;
     }
 
@@ -46,6 +48,27 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
       status: "ok",
       booking: bookingObj,
       arrivalUnlocked: isUnlocked,
+    });
+  } catch (err) {
+    return handleApiError(err);
+  }
+}
+
+/**
+ * DELETE /api/bookings/:id
+ * Allows the assigned boater to cancel their pending reservation request.
+ */
+export async function DELETE(req: NextRequest, { params }: RouteParams) {
+  try {
+    const { id } = await params;
+    const session = await requireAuth(req);
+
+    const cancelled = await cancelBoaterBooking(id, session.userId);
+
+    return NextResponse.json({
+      status: "ok",
+      message: "Reservation request cancelled successfully",
+      booking: cancelled,
     });
   } catch (err) {
     return handleApiError(err);

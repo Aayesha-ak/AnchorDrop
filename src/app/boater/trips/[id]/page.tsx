@@ -67,6 +67,9 @@ export default function BoaterTripDetailPage({
 
   const [booking, setBooking] = useState<TripBooking | null>(null);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelSuccess, setCancelSuccess] = useState(false);
   const [activeStatus, setActiveStatus] = useState<string>("");
 
   useEffect(() => {
@@ -74,6 +77,7 @@ export default function BoaterTripDetailPage({
 
     async function loadBooking() {
       setLoading(true);
+      setErrorMessage(null);
       try {
         // 1. Try single booking endpoint
         const res = await fetch(`/api/bookings/${id}`);
@@ -104,18 +108,32 @@ export default function BoaterTripDetailPage({
           }
         }
 
-        // 3. Graceful fallback for preview / demo environments
-        if (isMounted) {
+        // 3. Fallback only for explicit 'demo' preview id
+        if (id === "demo" && isMounted) {
           const fallback = createFallbackBooking(id);
           setBooking(fallback);
           setActiveStatus(fallback.status);
           setLoading(false);
+          return;
+        }
+
+        if (isMounted) {
+          setErrorMessage(
+            res.status === 403
+              ? "You do not have permission to view this reservation."
+              : "Reservation not found. It may have been removed or does not exist."
+          );
+          setLoading(false);
         }
       } catch {
         if (isMounted) {
-          const fallback = createFallbackBooking(id);
-          setBooking(fallback);
-          setActiveStatus(fallback.status);
+          if (id === "demo") {
+            const fallback = createFallbackBooking(id);
+            setBooking(fallback);
+            setActiveStatus(fallback.status);
+          } else {
+            setErrorMessage("Unable to connect to the server to load this reservation.");
+          }
           setLoading(false);
         }
       }
@@ -127,11 +145,51 @@ export default function BoaterTripDetailPage({
     };
   }, [id]);
 
-  if (loading || !booking) {
+  const handleCancelBooking = async () => {
+    if (!window.confirm("Are you sure you want to cancel this reservation request?")) {
+      return;
+    }
+    setCancelling(true);
+    try {
+      const res = await fetch(`/api/bookings/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to cancel reservation");
+      }
+      setActiveStatus(BOOKING_STATUSES.REJECTED);
+      setCancelSuccess(true);
+      setTimeout(() => setCancelSuccess(false), 4000);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Error cancelling reservation");
+    } finally {
+      setCancelling(false);
+    }
+  };
+
+  if (loading) {
     return (
       <div style={{ padding: "var(--space-12) 0", textAlign: "center" }}>
         <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>⚓</div>
         <p style={{ color: "var(--color-text-secondary)" }}>Loading voyage details...</p>
+      </div>
+    );
+  }
+
+  if (errorMessage || !booking) {
+    return (
+      <div style={{ maxWidth: "600px", margin: "var(--space-12) auto", textAlign: "center" }}>
+        <div className="surface-slip-card" style={{ padding: "var(--space-10) var(--space-6)" }}>
+          <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-3)" }}>⚓</div>
+          <h2 style={{ fontSize: "var(--font-size-xl)", marginBottom: "var(--space-2)", color: "var(--color-navy)" }}>
+            Reservation Unavailable
+          </h2>
+          <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-6)", fontSize: "var(--font-size-sm)" }}>
+            {errorMessage || "Unable to locate this voyage. It may have been removed or belongs to another boater."}
+          </p>
+          <Link href="/boater/trips" className="btn btn-primary">
+            ← Return to My Trips
+          </Link>
+        </div>
       </div>
     );
   }
@@ -280,8 +338,43 @@ export default function BoaterTripDetailPage({
             </p>
           </div>
 
-          <div>{getStatusBadge(currentStatus)}</div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "var(--space-2)" }}>
+            <div>{getStatusBadge(currentStatus)}</div>
+            {currentStatus === BOOKING_STATUSES.PENDING && (
+              <button
+                type="button"
+                onClick={handleCancelBooking}
+                disabled={cancelling}
+                className="btn btn-outline"
+                style={{
+                  fontSize: "var(--font-size-xs)",
+                  padding: "0.25rem 0.65rem",
+                  color: "#9F1239",
+                  borderColor: "#FDA4AF",
+                  backgroundColor: "#FFE4E6",
+                }}
+              >
+                {cancelling ? "Cancelling..." : "Cancel Request"}
+              </button>
+            )}
+          </div>
         </div>
+
+        {cancelSuccess && (
+          <div
+            style={{
+              padding: "var(--space-3)",
+              backgroundColor: "#D1FAE5",
+              color: "#065F46",
+              border: "1px solid #6EE7B7",
+              borderRadius: "var(--radius-md)",
+              marginBottom: "var(--space-4)",
+              fontSize: "var(--font-size-sm)",
+            }}
+          >
+            ✓ Your reservation request has been withdrawn.
+          </div>
+        )}
 
         {/* Dates & Vessel Grid */}
         <div
@@ -378,6 +471,10 @@ export default function BoaterTripDetailPage({
               {resolvedDock.dockType}
             </div>
           )}
+          <div>
+            <strong>Payment: </strong>
+            💵 Pay at Berth (Direct)
+          </div>
         </div>
       </div>
 

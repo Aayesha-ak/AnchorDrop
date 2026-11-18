@@ -4,7 +4,14 @@ import { NextRequest } from "next/server";
 import { AUTH_COOKIE_NAME, UserRole } from "@/lib/constants";
 import { AppError } from "@/lib/errors";
 
-const AUTH_SECRET = process.env.AUTH_SECRET || "anchordrop-default-dev-secret-key-32chars";
+const DEFAULT_DEV_SECRET = "anchordrop-default-dev-secret-key-32chars";
+const AUTH_SECRET = process.env.AUTH_SECRET || DEFAULT_DEV_SECRET;
+
+if (process.env.NODE_ENV === "production" && !process.env.AUTH_SECRET) {
+  console.warn(
+    "[Security Warning] AUTH_SECRET is not configured in production. Default fallback secret is active. Please configure AUTH_SECRET."
+  );
+}
 
 export interface SessionPayload {
   userId: string;

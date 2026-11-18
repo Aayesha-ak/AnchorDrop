@@ -3,7 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import FilterBar, { FilterState } from "./FilterBar";
 import DockGrid from "./DockGrid";
+import DockMap from "./DockMap";
 import { PublicDock } from "@/lib/serializers";
+import { FEATURES } from "@/lib/features";
 
 const initialFilters: FilterState = {
   search: "",
@@ -19,6 +21,7 @@ export default function ExploreSection() {
   const [docks, setDocks] = useState<PublicDock[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
   const fetchDocks = useCallback(async (currentFilters: FilterState) => {
     setLoading(true);
@@ -105,12 +108,77 @@ export default function ExploreSection() {
         </div>
       )}
 
-      {/* Berths Grid Results & Skeletons (Sub-phase 13.2, 13.3, 13.4, 13.8) */}
-      <DockGrid
-        docks={docks}
-        loading={loading}
-        onClearFilters={handleClearFilters}
-      />
+      {/* View Toggle Bar (Only active when NEXT_PUBLIC_ENABLE_MAPS=true) */}
+      {FEATURES.ENABLE_MAPS && !loading && docks.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "var(--space-3)",
+            marginBottom: "var(--space-6)",
+            paddingBottom: "var(--space-3)",
+            borderBottom: "1px solid var(--color-border-subtle)",
+          }}
+        >
+          <div style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-secondary)" }}>
+            Showing <strong>{docks.length}</strong> verified coastal berths
+          </div>
+          <div
+            style={{
+              display: "inline-flex",
+              backgroundColor: "var(--color-cream-soft)",
+              border: "1px solid var(--color-border)",
+              borderRadius: "var(--radius-pill)",
+              padding: "2px",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setViewMode("grid")}
+              style={{
+                padding: "0.35rem 0.85rem",
+                borderRadius: "var(--radius-pill)",
+                fontSize: "var(--font-size-xs)",
+                fontWeight: 600,
+                backgroundColor: viewMode === "grid" ? "var(--color-navy)" : "transparent",
+                color: viewMode === "grid" ? "var(--color-cream)" : "var(--color-text-secondary)",
+              }}
+            >
+              📋 Slips Grid
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("map")}
+              style={{
+                padding: "0.35rem 0.85rem",
+                borderRadius: "var(--radius-pill)",
+                fontSize: "var(--font-size-xs)",
+                fontWeight: 600,
+                backgroundColor: viewMode === "map" ? "var(--color-navy)" : "transparent",
+                color: viewMode === "map" ? "var(--color-cream)" : "var(--color-text-secondary)",
+              }}
+            >
+              🗺️ Waterway Map
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Render Map or Grid based on toggle */}
+      {FEATURES.ENABLE_MAPS && viewMode === "map" ? (
+        <div style={{ marginBottom: "var(--space-8)" }}>
+          <DockMap docks={docks} />
+        </div>
+      ) : (
+        /* Berths Grid Results & Skeletons (Sub-phase 13.2, 13.3, 13.4, 13.8) */
+        <DockGrid
+          docks={docks}
+          loading={loading}
+          onClearFilters={handleClearFilters}
+        />
+      )}
     </div>
   );
 }

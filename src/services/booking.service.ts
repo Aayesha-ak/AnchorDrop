@@ -7,6 +7,7 @@ import { User } from "@/models/User";
 import { BOOKING_STATUSES, USER_ROLES } from "@/lib/constants";
 import { AppError } from "@/lib/errors";
 import { CreateBookingInput } from "@/validations/booking.schema";
+import { checkCompatibility as runCanonicalCompatibility } from "@/services/compatibility.service";
 
 export class BadRequestError extends AppError {
   constructor(message: string, details?: unknown) {
@@ -40,32 +41,30 @@ export function checkCompatibility(
   vessel: { lengthFt: number; beamFt: number; draftFt: number },
   dock: { maxLengthFt: number; maxBeamFt: number; minDepthFt: number }
 ): CompatibilityResult {
+  const result = runCanonicalCompatibility({ vessel, dock });
   const reasons: string[] = [];
-  const lengthOk = vessel.lengthFt <= dock.maxLengthFt;
-  const beamOk = vessel.beamFt <= dock.maxBeamFt;
-  const draftOk = vessel.draftFt <= dock.minDepthFt;
 
-  if (!lengthOk) {
+  if (!result.constraints.length.passes) {
     reasons.push(
       `Vessel length (${vessel.lengthFt}ft) exceeds dock maximum length (${dock.maxLengthFt}ft)`
     );
   }
-  if (!beamOk) {
+  if (!result.constraints.beam.passes) {
     reasons.push(
       `Vessel beam (${vessel.beamFt}ft) exceeds dock maximum beam (${dock.maxBeamFt}ft)`
     );
   }
-  if (!draftOk) {
+  if (!result.constraints.draft.passes) {
     reasons.push(
       `Vessel draft (${vessel.draftFt}ft) exceeds dock minimum water depth (${dock.minDepthFt}ft)`
     );
   }
 
   return {
-    compatible: lengthOk && beamOk && draftOk,
-    lengthOk,
-    beamOk,
-    draftOk,
+    compatible: result.compatible,
+    lengthOk: result.constraints.length.passes,
+    beamOk: result.constraints.beam.passes,
+    draftOk: result.constraints.draft.passes,
     reasons,
   };
 }
@@ -208,5 +207,5 @@ export async function getBookingById(bookingId: string, userId: string) {
   return booking;
 }
 
-export { getBoaterBookings, getOwnerBookings, updateBookingStatus } from "./booking-lifecycle.service";
+export { getBoaterBookings, getOwnerBookings, updateBookingStatus, cancelBoaterBooking } from "./booking-lifecycle.service";
 

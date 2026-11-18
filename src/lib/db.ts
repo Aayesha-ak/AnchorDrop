@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/anchordrop";
 
+if (process.env.NODE_ENV === "production" && !process.env.MONGODB_URI) {
+  console.warn(
+    "[Database Warning] MONGODB_URI is not set in production. Attempting localhost fallback. Configure MONGODB_URI (e.g. MongoDB Atlas) for persistent production storage."
+  );
+}
+
 interface MongooseCache {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
@@ -55,7 +61,16 @@ export async function connectDB(): Promise<typeof mongoose> {
             cached.mongodInstance = mongod;
             const memoryUri = mongod.getUri();
             console.log(`[Database] Connected to in-memory MongoDB at ${memoryUri}`);
-            return await mongoose.connect(memoryUri, { bufferCommands: false });
+            const conn = await mongoose.connect(memoryUri, { bufferCommands: false });
+            cached.conn = conn;
+            try {
+              const { seedDatabase } = await import("../../scripts/seed");
+              await seedDatabase();
+              console.log("[Database] In-memory database auto-seeded successfully with demo accounts & slips.");
+            } catch (seedErr) {
+              console.warn("[Database] Auto-seed skipped:", (seedErr as Error).message);
+            }
+            return conn;
           } catch (fallbackErr) {
             console.error("[Database] Failed to initialize in-memory fallback:", fallbackErr);
             throw primaryErr;

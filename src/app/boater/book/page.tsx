@@ -664,7 +664,7 @@ function BookingForm() {
                 marginTop: "var(--space-2)",
               }}
             >
-              🔒 No payment is charged now. Host receives and reviews your request before approval.
+              💵 Pay at Berth / Dockside: No online card is charged now. Settlement occurs directly with host upon arrival.
             </p>
           </div>
         </form>
@@ -754,6 +754,25 @@ function BookingForm() {
                   ({stayDays} day{stayDays > 1 ? "s" : ""} × ${dock.pricePerDay}/day)
                 </div>
               )}
+
+              {/* Dockside Direct Payment Callout */}
+              <div
+                style={{
+                  marginTop: "var(--space-4)",
+                  padding: "var(--space-3)",
+                  backgroundColor: "var(--color-cream-soft)",
+                  borderRadius: "var(--radius-md)",
+                  border: "1px solid var(--color-border-subtle)",
+                  fontSize: "var(--font-size-xs)",
+                }}
+              >
+                <div style={{ fontWeight: 600, color: "var(--color-navy)", display: "flex", alignItems: "center", gap: "0.25rem", marginBottom: "0.25rem" }}>
+                  <span>💵</span> Payment Method: Pay at Berth
+                </div>
+                <p style={{ color: "var(--color-text-secondary)", margin: 0, lineHeight: 1.4 }}>
+                  Direct dockside settlement (cash or direct host payment upon arrival). Zero online card processing fees.
+                </p>
+              </div>
             </div>
           </div>
         </aside>

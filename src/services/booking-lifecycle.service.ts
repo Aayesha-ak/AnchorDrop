@@ -103,6 +103,23 @@ export async function updateBookingStatus(
         `Invalid status transition from 'pending' to '${status}'. Pending bookings can only transition to 'accepted' or 'rejected'.`
       );
     }
+
+    // Overlap prevention on single-slip berths
+    if (status === BOOKING_STATUSES.ACCEPTED) {
+      const overlapping = await Booking.findOne({
+        _id: { $ne: booking._id },
+        dockId: booking.dockId,
+        status: BOOKING_STATUSES.ACCEPTED,
+        startDate: { $lte: booking.endDate },
+        endDate: { $gte: booking.startDate },
+      });
+
+      if (overlapping) {
+        throw new ConflictError(
+          "Conflict: This dock berth is already reserved for overlapping dates by another confirmed reservation."
+        );
+      }
+    }
   } else if (booking.status === BOOKING_STATUSES.ACCEPTED) {
     if (status !== BOOKING_STATUSES.COMPLETED) {
       throw new ConflictError(
@@ -116,6 +133,37 @@ export async function updateBookingStatus(
   }
 
   booking.status = status as BookingStatus;
+  await booking.save();
+
+  return booking;
+}
+
+/**
+ * Allows the assigned boater to cancel their reservation if it is pending.
+ */
+export async function cancelBoaterBooking(bookingId: string, boaterId: string) {
+  await connectDB();
+
+  if (!mongoose.Types.ObjectId.isValid(bookingId)) {
+    throw new NotFoundError("Booking not found");
+  }
+
+  const booking = await Booking.findById(bookingId);
+  if (!booking) {
+    throw new NotFoundError("Booking not found");
+  }
+
+  if (booking.boaterId.toString() !== boaterId) {
+    throw new ForbiddenError("Forbidden: Only the assigned boater can cancel this reservation");
+  }
+
+  if (booking.status !== BOOKING_STATUSES.PENDING) {
+    throw new ConflictError(
+      `Cannot cancel reservation in '${booking.status}' status. Only pending reservations can be cancelled directly by the boater.`
+    );
+  }
+
+  booking.status = BOOKING_STATUSES.REJECTED;
   await booking.save();
 
   return booking;

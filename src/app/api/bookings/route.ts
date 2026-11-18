@@ -27,11 +27,20 @@ export async function POST(req: NextRequest) {
 
     const booking = await createBooking(validation.data, session.userId);
 
+    const bookingRaw = (booking.toObject ? booking.toObject() : booking) as unknown as Record<string, unknown>;
+    const bookingObj: Record<string, unknown> = { ...bookingRaw };
+    if (bookingObj.dockId && typeof bookingObj.dockId === "object") {
+      const dockObj = { ...(bookingObj.dockId as Record<string, unknown>) };
+      delete dockObj.arrivalInstructions;
+      bookingObj.dockId = dockObj;
+      bookingObj.dock = dockObj;
+    }
+
     return NextResponse.json(
       {
         status: "ok",
         message: "Reservation request submitted",
-        booking,
+        booking: bookingObj,
       },
       { status: 201 }
     );
